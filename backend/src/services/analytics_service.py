@@ -186,8 +186,6 @@ class AnalyticsService:
         await self.helper.get_match_or_404(match_id)
         events = await self._load_all_events(match_id)
 
-        # Эта базовая версия намеренно не выводит владение
-        # из количества передач: это было бы недостоверно.
         has_possession_data = any(
             self._payload(event).get("possession_start_second") is not None
             and self._payload(event).get("possession_end_second") is not None
@@ -239,7 +237,6 @@ class AnalyticsService:
         self,
         match_id: UUID,
     ) -> dict[str, Any]:
-        """Сравнивает показатели команд без генерации текстовых выводов."""
         result = await self.run_match_analysis(match_id)
 
         home = result["teams"]["home"]["statistics"]

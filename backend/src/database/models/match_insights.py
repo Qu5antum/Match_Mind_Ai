@@ -26,7 +26,7 @@ class InsightType(str, enum.Enum):
     PREDICTION = "prediction"
     PLAYER = "player"
     RECAP = "recap"
-    SUMMARy = "summary"
+    SUMMARY = "summary"
 
 
 class Importance(str, enum.Enum):

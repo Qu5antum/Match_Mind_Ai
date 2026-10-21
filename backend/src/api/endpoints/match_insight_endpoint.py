@@ -5,12 +5,37 @@ from fastapi import APIRouter, Depends, Query, status
 from src.api.dependencies import get_match_insight_service
 from src.api.schemas.match_insight import (
     GenerateMatchInsightsRequest,
+    MatchInsightCreate,
     MatchInsightResponse,
 )
 from src.database.models.match_insights import Importance, InsightType
 from src.services.match_insight_service import MatchInsightService
 
 match_insight_route = APIRouter(prefix="/api", tags=["Match insights"])
+
+
+@match_insight_route.post(
+    "/insights",
+    response_model=MatchInsightResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_insight(
+    data: MatchInsightCreate,
+    insight_service: MatchInsightService = Depends(get_match_insight_service),
+):
+    return await insight_service.create_insight(data)
+
+
+@match_insight_route.post(
+    "/insights/bulk",
+    response_model=list[MatchInsightResponse],
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_insights(
+    data: list[MatchInsightCreate],
+    insight_service: MatchInsightService = Depends(get_match_insight_service),
+):
+    return await insight_service.create_insights(data)
 
 
 @match_insight_route.post(
@@ -60,3 +85,20 @@ async def get_insight(
     insight_service: MatchInsightService = Depends(get_match_insight_service),
 ):
     return await insight_service.get_insight_by_id(insight_id)
+
+
+@match_insight_route.get(
+    "/matches/{match_id}/insights/by-minute",
+    response_model=list[MatchInsightResponse],
+)
+async def get_insights_by_minute(
+    match_id: UUID,
+    start_minute: int = Query(ge=0),
+    end_minute: int = Query(ge=0),
+    insight_service: MatchInsightService = Depends(get_match_insight_service),
+):
+    return await insight_service.get_insights_by_minute(
+        match_id=match_id,
+        start_minute=start_minute,
+        end_minute=end_minute,
+    )

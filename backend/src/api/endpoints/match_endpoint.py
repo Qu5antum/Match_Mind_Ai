@@ -1,5 +1,3 @@
-
-
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, status
@@ -53,3 +51,27 @@ async def simulate_match(
 ):
     await simulator_service.simulate_match(match_id)
     return await match_service.get_match_by_id(match_id)
+
+
+@match_route.post("/{match_id}/play")
+async def play_match(
+    match_id: UUID,
+    match_service: MatchService = Depends(get_match_service),
+):
+    return {"message": await match_service.start_playback(match_id)}
+
+
+@match_route.post("/{match_id}/pause")
+async def pause_match(
+    match_id: UUID,
+    match_service: MatchService = Depends(get_match_service),
+):
+    return {"message": await match_service.pause_match(match_id)}
+
+
+@match_route.post("/{match_id}/finish")
+async def finish_match(
+    match_id: UUID,
+    match_service: MatchService = Depends(get_match_service),
+):
+    return {"message": await match_service.finish_match(match_id)}

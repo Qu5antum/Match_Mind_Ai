@@ -28,7 +28,7 @@ class MatchEventService:
 
         try:
             new_match_event = MatchEvent(**event_data)
-            await self.match_event_repo.create(new_match_event)
+            self.session.add(new_match_event)
             await self.session.commit()
             await self.session.refresh(new_match_event)
 
@@ -166,7 +166,7 @@ class MatchEventService:
             after_sequence=after_sequence,
         )
 
-    async def get_match_events_after_suquence(
+    async def get_match_events_after_sequence(
         self, 
         match_id: UUID,
         sequence: int,
@@ -188,6 +188,20 @@ class MatchEventService:
         logger.info(f"Successfull response of events: {match_id}")
 
         return events
+
+    async def get_match_events_after_suquence(
+        self,
+        match_id: UUID,
+        sequence: int,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[MatchEventResponse]:
+        return await self.get_match_events_after_sequence(
+            match_id=match_id,
+            sequence=sequence,
+            limit=limit,
+            offset=offset,
+        )
 
     async def get_match_events_by_type(
         self, 

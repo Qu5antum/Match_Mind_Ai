@@ -83,6 +83,21 @@ class MatchEventResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class MatchEventCreate(BaseModel):
+    sequence: int = Field(ge=0)
+    event_time_second: int = Field(ge=0)
+    event_type: EventType
+    team_id: UUID
+    player_id: UUID | None = None
+    related_player_id: UUID | None = None
+    start_x: float | None = Field(default=None, ge=0, le=100)
+    start_y: float | None = Field(default=None, ge=0, le=100)
+    end_x: float | None = Field(default=None, ge=0, le=100)
+    end_y: float | None = Field(default=None, ge=0, le=100)
+    outcome: str | None = Field(default=None, max_length=30)
+    payload: dict = Field(default_factory=dict)
+
+
 class DetailedMatchResponse(BaseModel):
     id: UUID
     status: MatchStatus

@@ -49,7 +49,7 @@ class MatchEventRepository(BaseRepository):
             select(self.model)
             .where(
                 self.model.match_id == match_id,
-                self.model.sequence == sequence
+                self.model.sequence > sequence
             )
             .order_by(self.model.sequence.asc())
             .offset(offset)
@@ -106,8 +106,8 @@ class MatchEventRepository(BaseRepository):
         player_id: UUID | None = None
     ):
         query = (
-            select(func.count(self.model))
-            .where(self.model.match_id == match_id)
+            select(func.count(self.model.id))
+            .where(self.model.match_id == match_id) 
         )
 
         if event_type:

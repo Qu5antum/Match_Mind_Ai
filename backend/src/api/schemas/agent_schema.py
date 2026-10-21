@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 
 from src.database.models.match_insights import InsightType, Importance
+from uuid import UUID
 
 
 class InsightEvidence(BaseModel):
@@ -94,6 +95,31 @@ class MatchQuestionRequest(BaseModel):
 
 
 class AgentSummaryRequest(BaseModel):
+    language: str = Field(default="en", min_length=2, max_length=10)
+
+
+class KeyMomentRequest(BaseModel):
+    event_id: UUID
+    language: str = Field(default="en", min_length=2, max_length=10)
+
+
+class TacticalAnalysisRequest(BaseModel):
+    team_id: UUID | None = None
+    language: str = Field(default="en", min_length=2, max_length=10)
+
+
+class PlayerAnalysisRequest(BaseModel):
+    player_id: UUID
+    language: str = Field(default="en", min_length=2, max_length=10)
+
+
+class InsightPersonalizationRequest(BaseModel):
+    audience: str = Field(default="beginner", min_length=2, max_length=20)
+    language: str = Field(default="en", min_length=2, max_length=10)
+
+
+class TeamRecommendationsRequest(BaseModel):
+    team_id: UUID
     language: str = Field(default="en", min_length=2, max_length=10)
 
 

@@ -14,7 +14,7 @@ class ManusProvider(BaseProvider):
     TIMEOUT = 240
 
     def __init__(self):
-        self.model = getattr(settings, "MANUS_MODEL", "manus")
+        self.model = settings.MANUS_MODEL
         self.api_key = settings.MANUS_API_KEY
 
         self.client = httpx.Client(

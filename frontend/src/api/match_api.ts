@@ -9,42 +9,42 @@ import type {
 
 export const matchService = {
   async createMatch(data: CreateMatch): Promise<MatchResponse> {
-    const response = await api.post<MatchResponse>('/match', data);
+    const response = await api.post<MatchResponse>('/matches', data);
     return response.data;
   },
 
   async getMatches(params?: GetMatchesParams): Promise<MatchResponse[]> {
-    const response = await api.get<MatchResponse[]>('/match', { params });
+    const response = await api.get<MatchResponse[]>('/matches', { params });
     return response.data;
   },
 
   async getMatch(matchId: string): Promise<MatchResponse> {
-    const response = await api.get<MatchResponse>(`/match/${matchId}`);
+    const response = await api.get<MatchResponse>(`/matches/${matchId}`);
     return response.data;
   },
 
   async getMatchDetail(matchId: string): Promise<DetailedMatchResponse> {
-    const response = await api.get<DetailedMatchResponse>(`/match/${matchId}/detail`);
+    const response = await api.get<DetailedMatchResponse>(`/matches/${matchId}/detail`);
     return response.data;
   },
 
   async simulateMatch(matchId: string): Promise<MatchResponse> {
-    const response = await api.post<MatchResponse>(`/match/${matchId}/simulate`);
+    const response = await api.post<MatchResponse>(`/matches/${matchId}/simulate`);
     return response.data;
   },
 
   async playMatch(matchId: string): Promise<MessageResponse> {
-    const response = await api.post<MessageResponse>(`/match/${matchId}/play`);
+    const response = await api.post<MessageResponse>(`/matches/${matchId}/play`);
     return response.data;
   },
 
   async pauseMatch(matchId: string): Promise<MessageResponse> {
-    const response = await api.post<MessageResponse>(`/match/${matchId}/pause`);
+    const response = await api.post<MessageResponse>(`/matches/${matchId}/pause`);
     return response.data;
   },
 
   async finishMatch(matchId: string): Promise<MessageResponse> {
-    const response = await api.post<MessageResponse>(`/match/${matchId}/finish`);
+    const response = await api.post<MessageResponse>(`/matches/${matchId}/finish`);
     return response.data;
   },
 };

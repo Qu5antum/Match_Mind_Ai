@@ -15,11 +15,6 @@ logger = logging.getLogger(__name__)
 
 class GeminiProvider(BaseProvider):
     def __init__(self):
-        if not settings.GEMINI_API_KEY:
-            raise RuntimeError("GEMINI_API_KEY must be configured for AI requests")
-        if not settings.GEMINI_MODEL:
-            raise RuntimeError("GEMINI_MODEL must be configured for AI requests")
-
         self.model = settings.GEMINI_MODEL
         self.client = genai.Client(
             api_key=settings.GEMINI_API_KEY,
@@ -59,11 +54,7 @@ class GeminiProvider(BaseProvider):
                 config=config,
             )
         except errors.APIError as exc:
-            logger.error("Gemini API error type: %s", type(exc).__name__)
-            logger.error("Gemini API error code: %s", exc.code)
             logger.error("Gemini API error message: %s", exc.message)
-            logger.error("Gemini API error repr: %r", exc)
-            logger.exception("Full Gemini API traceback")
             raise
 
         if not response.text:
